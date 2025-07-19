@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script>
+      function loadMaterials() {
+        google.script.run.withSuccessHandler(function(data) {
+          const select = document.getElementById("material");
+          select.innerHTML = "";
+          data.forEach(function(item) {
+            let option = document.createElement("option");
+            option.text = item;
+            option.value = item;
+            select.add(option);
+          });
+        }).getMaterials();
+      }
+
+      function submitIssue() {
+        const material = document.getElementById("material").value;
+        const qty = document.getElementById("quantity").value;
+        if (!qty || isNaN(qty)) {
+          alert("Please enter a valid quantity.");
+          return;
+        }
+        google.script.run.withSuccessHandler(function(msg) {
+          alert(msg);
+          document.getElementById("quantity").value = "";
+        }).issueMaterial(material, qty);
+      }
+
+      window.onload = loadMaterials;
+    </script>
+  </head>
+  <body>
+    <h3>Issue Material</h3>
+    <label for="material">Material:</label>
+    <select id="material"></select><br><br>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity"><br><br>
+
+    <button onclick="submitIssue()">Submit</button>
+  </body>
+  <iframe src="https://script.google.com/macros/s/AKfycbzBjUC9FlGpS6UgxVednZD4224mb1f7XYhcrTXjm1t2_iiffiyqePRn2VnevOfb0N_t/exec" width="100%" height="400px"></iframe>
+</html>
