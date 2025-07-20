@@ -6,7 +6,7 @@
 2. Click "Blank" to create a new spreadsheet
 3. Rename it to "Item Issues Tracker"
 4. **Copy the Spreadsheet ID from the URL**
-   - URL looks like: `1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE`
+   - URL looks like: `[1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE](https://script.google.com/macros/s/AKfycbwdaCtwqn0lmlyw68cD6CAy18RkZx01tAnqPa2kHgcyQA_-uh6tr49ixDhVPR38wDTQGg/exec)`
    - Copy the part between `/d/` and `/edit`
 5. Save this ID - you'll need it in Step 3
 
