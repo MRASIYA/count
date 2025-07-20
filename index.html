@@ -5,6 +5,7 @@
 </head>
 <body>
   <h2>Issue Material</h2>
+  
 
   <form id="issueForm">
     <label>Material Name:</label>
@@ -22,6 +23,19 @@
     const form = document.getElementById("issueForm");
     const responseBox = document.getElementById("response");
     const scriptURL = "https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec"; // ← paste your script URL
+    fetch("https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec", {
+  method: "POST",
+  mode: "no-cors", // ← important!
+  body: new FormData(form)
+})
+.then(() => {
+  document.getElementById("response").innerText = "Submitted successfully!";
+  form.reset();
+})
+.catch(error => {
+  document.getElementById("response").innerText = "Fetch failed: " + error.message;
+});
+
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -42,5 +56,35 @@
       });
     });
   </script>
+  <form id="issueForm">
+  <input type="text" name="material" required>
+  <input type="number" name="quantity" required>
+  <button type="submit">Submit</button>
+</form>
+
+<p id="response"></p>
+
+<script>
+const form = document.getElementById("issueForm");
+const scriptURL = "https://script.google.com/macros/s/YOUR_ID/exec";
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+
+  fetch(scriptURL, {
+    method: "POST",
+    mode: "no-cors", // Required!
+    body: new FormData(form)
+  })
+  .then(() => {
+    document.getElementById("response").innerText = "Success!";
+    form.reset();
+  })
+  .catch(error => {
+    document.getElementById("response").innerText = "Fetch failed: " + error.message;
+  });
+});
+</script>
+
 </body>
 </html>
