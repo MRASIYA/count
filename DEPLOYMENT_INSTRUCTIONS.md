@@ -98,7 +98,7 @@
    - Make sure you selected "Anyone" for web app access
 
 3. **Data not appearing**:
-   - Check that you replaced `1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE` with your actual ID
+   - Check that you replaced `[1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE](https://script.google.com/macros/s/AKfycbwdaCtwqn0lmlyw68cD6CAy18RkZx01tAnqPa2kHgcyQA_-uh6tr49ixDhVPR38wDTQGg/exec)` with your actual ID
    - Verify the sheet has the correct headers
 
 4. **Web app not loading**:
