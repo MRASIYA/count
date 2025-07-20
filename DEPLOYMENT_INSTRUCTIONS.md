@@ -20,7 +20,7 @@
 
 ### 3.1 Main Code (Code.gs)
 1. In the Apps Script editor, paste the content from your local `Code.gs` file
-2. **IMPORTANT**: Replace `'1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE'` with your actual spreadsheet ID from Step 1
+2. **IMPORTANT**: Replace `'[1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE](https://script.google.com/macros/s/AKfycbwdaCtwqn0lmlyw68cD6CAy18RkZx01tAnqPa2kHgcyQA_-uh6tr49ixDhVPR38wDTQGg/exec)'` with your actual spreadsheet ID from Step 1
 3. Save the file (Ctrl+S)
 
 ### 3.2 HTML Interface (Index.html)
