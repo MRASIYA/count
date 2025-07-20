@@ -1,92 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Material Issue Entry</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    button {
-      background-color: darkgreen;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    #response {
-      margin-top: 10px;
-      font-weight: bold;
-      text-align: center;
-    }
-    .download-btn {
-      display: block;
-      width: 200px;
-      margin: 30px auto;
-      padding: 10px;
-      background: #0057b7;
-      color: white;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Stock Entry</title>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+            const item = document.getElementById('item').value;
+            const quantity = document.getElementById('quantity').value;
+            const dateTime = new Date().toLocaleString();
+
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ item, quantity, dateTime })
+            });
+
+            if (response.ok) {
+                alert('Data submitted successfully!');
+                document.getElementById('stockForm').reset();
+            } else {
+                alert('Error submitting data.');
+            }
+        }
+    </script>
 </head>
 <body>
-
-  <form id="issueForm">
-    <h2>Material Issue Entry</h2>
-    <input type="text" name="material" placeholder="Material Name (C)" required />
-    <input type="number" name="quantity" placeholder="Quantity (G)" required />
-    <button type="submit">Submit</button>
-    <div id="response"></div>
-  </form>
-
-  <a class="download-btn" href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=xlsx" target="_blank" rel="noopener">
-    Download Excel File
-  </a>
-
-  <script>
-    const form = document.getElementById("issueForm");
-    const responseBox = document.getElementById("response");
-
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec"; // ← Replace this with your Apps Script Web App URL
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
-
-     fetch("https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec", {
-  method: "POST",
-  mode: "no-cors",
-  body: new FormData(form)
-})
-      .then(() => {
-        responseBox.textContent = "✅ Submitted successfully!";
-        form.reset();
-      })
-      .catch((error) => {
-        responseBox.textContent = "❌ Failed to submit: " + error.message;
-      });
-    });
-  </script>
-
+    <h1>Daily Stock Entry</h1>
+    <form id="stockForm" onsubmit="submitForm(event)">
+        <label for="item">Select Item (A section):</label>
+        <select id="item" required>
+            <option value="">--Select an item--</option>
+            <option value="Item1">Item 1</option>
+            <option value="Item2">Item 2</option>
+            <option value="Item3">Item 3</option>
+        </select>
+        <br><br>
+        
+        <label for="quantity">Quantity (B section):</label>
+        <input type="number" id="quantity" required>
+        <br><br>
+        
+        <label for="dateTime">Date and Time (C section):</label>
+        <input type="text" id="dateTime" value="" readonly>
+        <script>
+            document.getElementById('dateTime').value = new Date().toLocaleString();
+        </script>
+        <br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
