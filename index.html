@@ -1,90 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Material Issue Form</title>
+  <meta charset="UTF-8" />
+  <title>Material Issue Entry</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background-color: darkgreen;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #response {
+      margin-top: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .download-btn {
+      display: block;
+      width: 200px;
+      margin: 30px auto;
+      padding: 10px;
+      background: #0057b7;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h2>Issue Material</h2>
-  
 
   <form id="issueForm">
-    <label>Material Name:</label>
-    <input type="text" name="material" required><br><br>
-
-    <label>Quantity:</label>
-    <input type="number" name="quantity" required><br><br>
-
+    <h2>Material Issue Entry</h2>
+    <input type="text" name="material" placeholder="Material Name (C)" required />
+    <input type="number" name="quantity" placeholder="Quantity (G)" required />
     <button type="submit">Submit</button>
+    <div id="response"></div>
   </form>
 
-  <p id="response"></p>
+  <a class="download-btn" href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=xlsx" target="_blank" rel="noopener">
+    Download Excel File
+  </a>
 
   <script>
     const form = document.getElementById("issueForm");
     const responseBox = document.getElementById("response");
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec"; // ← paste your script URL
-    fetch("https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec", {
-  method: "POST",
-  mode: "no-cors", // ← important!
-  body: new FormData(form)
-})
-.then(() => {
-  document.getElementById("response").innerText = "Submitted successfully!";
-  form.reset();
-})
-.catch(error => {
-  document.getElementById("response").innerText = "Fetch failed: " + error.message;
-});
 
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec"; // ← Replace this with your Apps Script Web App URL
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-
       const formData = new FormData(form);
 
-      fetch(scriptURL, {
-        method: "POST",
-        body: formData,
-      })
-      .then(res => res.text())
-      .then(result => {
-        responseBox.innerText = result;
+     fetch("https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec", {
+  method: "POST",
+  mode: "no-cors",
+  body: new FormData(form)
+})
+      .then(() => {
+        responseBox.textContent = "✅ Submitted successfully!";
         form.reset();
       })
-      .catch(error => {
-        responseBox.innerText = "Error: " + error.message;
+      .catch((error) => {
+        responseBox.textContent = "❌ Failed to submit: " + error.message;
       });
     });
   </script>
-  <form id="issueForm">
-  <input type="text" name="material" required>
-  <input type="number" name="quantity" required>
-  <button type="submit">Submit</button>
-</form>
-
-<p id="response"></p>
-
-<script>
-const form = document.getElementById("issueForm");
-const scriptURL = "https://script.google.com/macros/s/YOUR_ID/exec";
-
-form.addEventListener("submit", e => {
-  e.preventDefault();
-
-  fetch(scriptURL, {
-    method: "POST",
-    mode: "no-cors", // Required!
-    body: new FormData(form)
-  })
-  .then(() => {
-    document.getElementById("response").innerText = "Success!";
-    form.reset();
-  })
-  .catch(error => {
-    document.getElementById("response").innerText = "Fetch failed: " + error.message;
-  });
-});
-</script>
 
 </body>
 </html>
