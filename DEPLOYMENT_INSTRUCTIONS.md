@@ -6,7 +6,7 @@
 2. Click "Blank" to create a new spreadsheet
 3. Rename it to "Item Issues Tracker"
 4. **Copy the Spreadsheet ID from the URL**
-   - URL looks like: `https://docs.google.com/spreadsheets/d/1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE/edit`
+   - URL looks like: `1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE`
    - Copy the part between `/d/` and `/edit`
 5. Save this ID - you'll need it in Step 3
 
@@ -20,7 +20,7 @@
 
 ### 3.1 Main Code (Code.gs)
 1. In the Apps Script editor, paste the content from your local `Code.gs` file
-2. **IMPORTANT**: Replace `'https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec'` with your actual spreadsheet ID from Step 1
+2. **IMPORTANT**: Replace `'1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE'` with your actual spreadsheet ID from Step 1
 3. Save the file (Ctrl+S)
 
 ### 3.2 HTML Interface (Index.html)
@@ -98,7 +98,7 @@
    - Make sure you selected "Anyone" for web app access
 
 3. **Data not appearing**:
-   - Check that you replaced `1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzEhttps://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec` with your actual ID
+   - Check that you replaced `1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE` with your actual ID
    - Verify the sheet has the correct headers
 
 4. **Web app not loading**:
