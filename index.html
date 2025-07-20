@@ -9,15 +9,12 @@
             event.preventDefault();
             const item = document.getElementById('item').value;
             const quantity = document.getElementById('quantity').value;
-            const dateTime = new Date().toLocaleString();
 
-            const response = await fetch('https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ item, quantity, dateTime })
-            });
+            // Send as GET parameters
+            const params = new URLSearchParams({ item, quantity });
+            const url = 'https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec?' + params.toString();
+
+            const response = await fetch(url, { method: 'GET' });
 
             if (response.ok) {
                 alert('Data submitted successfully!');
@@ -42,13 +39,6 @@
         
         <label for="quantity">Quantity (B section):</label>
         <input type="number" id="quantity" required>
-        <br><br>
-        
-        <label for="dateTime">Date and Time (C section):</label>
-        <input type="text" id="dateTime" value="" readonly>
-        <script>
-            document.getElementById('dateTime').value = new Date().toLocaleString();
-        </script>
         <br><br>
         
         <button type="submit">Submit</button>
