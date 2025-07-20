@@ -12,7 +12,7 @@
 
             // Send as GET parameters
             const params = new URLSearchParams({ item, quantity });
-            const url = 'https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec?' + params.toString();
+            const url = 'https://script.google.com/macros/s/AKfycbyvYEOmA0KmjqW6sC6kCcGm5NVAmCQnN3d6xlgjiCxc/dev' + params.toString();
 
             const response = await fetch(url, { method: 'GET' });
 
