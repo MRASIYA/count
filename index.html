@@ -1,34 +1,42 @@
-<!-- Index.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Material Issue Web App</title>
+  <title>Issue Tracker</title>
 </head>
 <body>
-  <h2>Enter Material Issue</h2>
-  <form id="form">
-    <input type="text" id="material" placeholder="Material Name" required>
-    <input type="number" id="quantity" placeholder="Quantity" required>
+  <h2>Material Issue Form</h2>
+
+  <form id="issueForm">
+    <label for="material">Material Name:</label>
+    <input type="text" id="material" name="material" required><br><br>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" required><br><br>
+
     <button type="submit">Submit</button>
   </form>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec";
+    const form = document.getElementById('issueForm');
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyBbTkgNQHIXYRMtswOMOBZZ1vc0gWq-q6f34cxYUjWoCTaON_7P-mim8Dhnh5ImsHvPw/exec"; // ← Your script URL
 
-    document.getElementById('form').addEventListener('submit', async (e) => {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const material = document.getElementById('material').value;
-      const quantity = document.getElementById('quantity').value;
 
-      const response = await fetch(scriptURL, {
+      const formData = new FormData(form);
+
+      fetch(scriptURL, {
         method: 'POST',
-        body: JSON.stringify({ material, quantity })
-      });
-
-      const text = await response.text();
-      alert(text);
+        body: formData
+      })
+      .then(response => response.text())
+      .then(result => alert(result))
+      .catch(error => alert("Error: " + error.message));
     });
   </script>
+  <a href="https://docs.google.com/spreadsheets/d/1EP0HuQ_XzhLPCnMjUwiRxQo2m5AM7tYUTyKRUHAYLzE/edit?usp=sharing" target="_blank">
+  <button>Download Excel</button>
+</a>
+
 </body>
 </html>
