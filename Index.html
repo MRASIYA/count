@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <?!= include('Styles'); ?>
+  <script>
+    // Tab functionality
+    function showTab(tabName) {
+      // Hide all tab contents
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabContents.forEach(content => content.classList.remove('active'));
+      
+      // Remove active class from all tabs
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      // Show selected tab content
+      document.getElementById(tabName).classList.add('active');
+      document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+      
+      // Load issues if viewing the dashboard
+      if (tabName === 'dashboard') {
+        loadIssues();
+      }
+    }
+
+    // Add new issue
+    function processForm() {
+      const formData = {
+        itemName: document.getElementById('itemName').value,
+        issueDescription: document.getElementById('issueDescription').value,
+        priority: document.getElementById('priority').value,
+        reporterName: document.getElementById('reporterName').value,
+        assignedTo: document.getElementById('assignedTo').value,
+        notes: document.getElementById('notes').value
+      };
+
+      google.script.run
+        .withSuccessHandler(function(response) {
+          alert(response.message);
+          if (response.success) {
+            document.getElementById('issueForm').reset();
+            // Refresh the dashboard if it's active
+            if (document.getElementById('dashboard').classList.contains('active')) {
+              loadIssues();
+            }
+          }
+        })
+        .withFailureHandler(function(error) {
+          alert('Error: ' + error.message);
+        })
+        .addIssue(formData);
+      return false;
+    }
+
+    // Load all issues
+    function loadIssues() {
+      google.script.run
+        .withSuccessHandler(displayIssues)
+        .withFailureHandler(function(error) {
+          document.getElementById('issuesContainer').innerHTML = '<p>Error loading issues: ' + error.message + '</p>';
+        })
+        .getAllIssues();
+    }
+
+    // Display issues in table
+    function displayIssues(issues) {
+      const container = document.getElementById('issuesContainer');
+      
+      if (!issues || issues.length === 0) {
+        container.innerHTML = '<p>No issues found. Add your first issue using the "Add Issue" tab.</p>';
+        return;
+      }
+
+      let html = `
+        <table class="issue-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Item Name</th>
+              <th>Description</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Reporter</th>
+              <th>Assigned To</th>
+              <th>Reported Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      issues.forEach(issue => {
+        const statusClass = `status-${issue.status.toLowerCase().replace(/\s+/g, '-')}`;
+        const priorityClass = `priority-${issue.priority.toLowerCase()}`;
+        const reportedDate = new Date(issue.reportedDate).toLocaleDateString();
+        
+        html += `
+          <tr>
+            <td>${issue.id}</td>
+            <td>${issue.itemName}</td>
+            <td title="${issue.issueDescription}">${issue.issueDescription.substring(0, 50)}${issue.issueDescription.length > 50 ? '...' : ''}</td>
+            <td class="${priorityClass}">${issue.priority}</td>
+            <td class="${statusClass}">${issue.status}</td>
+            <td>${issue.reporterName}</td>
+            <td>${issue.assignedTo || 'Unassigned'}</td>
+            <td>${reportedDate}</td>
+            <td>
+              <select onchange="updateStatus(${issue.id}, this.value)" class="btn-small">
+                <option value="" disabled selected>Change Status</option>
+                <option value="Open" ${issue.status === 'Open' ? 'selected' : ''}>Open</option>
+                <option value="In Progress" ${issue.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                <option value="Resolved" ${issue.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+                <option value="Closed" ${issue.status === 'Closed' ? 'selected' : ''}>Closed</option>
+              </select>
+              <button onclick="deleteIssue(${issue.id})" class="btn-small btn-danger">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+
+    // Update issue status
+    function updateStatus(id, newStatus) {
+      if (!newStatus) return;
+      
+      google.script.run
+        .withSuccessHandler(function(response) {
+          alert(response.message);
+          if (response.success) {
+            loadIssues();
+          }
+        })
+        .withFailureHandler(function(error) {
+          alert('Error: ' + error.message);
+        })
+        .updateIssueStatus(id, newStatus);
+    }
+
+    // Delete issue
+    function deleteIssue(id) {
+      if (confirm('Are you sure you want to delete this issue?')) {
+        google.script.run
+          .withSuccessHandler(function(response) {
+            alert(response.message);
+            if (response.success) {
+              loadIssues();
+            }
+          })
+          .withFailureHandler(function(error) {
+            alert('Error: ' + error.message);
+          })
+          .deleteIssue(id);
+      }
+    }
+
+    // Initialize the app
+    window.onload = function() {
+      showTab('addIssue'); // Show add issue tab by default
+    };
+  </script>
+</head>
+<body>
+  <h1>Item Issues Tracking System</h1>
+  
+  <!-- Navigation Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('addIssue')">Add Issue</button>
+    <button class="tab" onclick="showTab('dashboard')">Dashboard</button>
+  </div>
+
+  <!-- Add Issue Tab -->
+  <div id="addIssue" class="tab-content active">
+    <div class="container">
+      <h2>Report New Issue</h2>
+      <form id="issueForm" onsubmit="return processForm();">
+        <div>
+          <label for="itemName">Item Name:</label>
+          <input type="text" id="itemName" name="itemName" required>
+        </div>
+        
+        <div>
+          <label for="issueDescription">Issue Description:</label>
+          <textarea id="issueDescription" name="issueDescription" required placeholder="Describe the issue in detail..."></textarea>
+        </div>
+        
+        <div>
+          <label for="priority">Priority:</label>
+          <select id="priority" name="priority" required>
+            <option value="">Select Priority</option>
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        
+        <div>
+          <label for="reporterName">Reporter Name:</label>
+          <input type="text" id="reporterName" name="reporterName" required>
+        </div>
+
+        <div>
+          <label for="assignedTo">Assigned To (Optional):</label>
+          <input type="text" id="assignedTo" name="assignedTo" placeholder="Leave blank if unassigned">
+        </div>
+
+        <div>
+          <label for="notes">Additional Notes (Optional):</label>
+          <textarea id="notes" name="notes" placeholder="Any additional information..."></textarea>
+        </div>
+        
+        <input type="submit" value="Submit Issue">
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard Tab -->
+  <div id="dashboard" class="tab-content">
+    <div class="container">
+      <h2>Issues Dashboard</h2>
+      <button onclick="loadIssues()" style="margin-bottom: 20px;">Refresh</button>
+      <div id="issuesContainer">
+        <p>Click "Refresh" to load issues...</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,42 +1,117 @@
-# DailyStock Project
+# Item Issues Web App
 
-## Overview
-The DailyStock project is a web application that allows users to submit stock data to a Google Sheet. It features a simple frontend form for data entry and a backend powered by Google Apps Script to handle submissions.
+A Google Sheets-based web application for tracking and managing item issues with a user-friendly interface.
 
-## Project Structure
-```
-DailyStock
-├── stockApp.gs        # Google Apps Script backend logic
-├── index.html         # Web app frontend
-└── README.md          # Project documentation
-```
+## Features
 
-## Files Description
+✅ **Add New Issues**: Submit detailed issue reports with priority levels  
+✅ **Dashboard View**: See all issues in a table format  
+✅ **Status Management**: Update issue status (Open, In Progress, Resolved, Closed)  
+✅ **Priority Tracking**: Categorize issues by Low, Medium, High priority  
+✅ **Assignment**: Assign issues to team members  
+✅ **Real-time Updates**: Changes sync directly to Google Sheets  
+✅ **Mobile Responsive**: Works on desktop and mobile devices  
+✅ **No Database Needed**: Uses Google Sheets as the backend  
 
-### stockApp.gs
-This file contains the Google Apps Script backend logic. It handles the data submission from the web app to the Google Sheet, processes the input from the user, and automatically adds the current date and time to the entries.
+## What You'll Get
 
-### index.html
-This file is the web app frontend. It includes a form with three sections:
-- **A Section**: A dropdown for selecting an item.
-- **B Section**: An input for quantity.
-- **C Section**: A display for the current date and time.
+### 1. Web Interface
+- Clean, professional-looking web app
+- Two main tabs: "Add Issue" and "Dashboard"
+- Form validation and error handling
+- Responsive design for all devices
 
-It also includes JavaScript to handle form submission and fetch data from the Google Apps Script URL.
+### 2. Issue Tracking Fields
+- **ID**: Auto-generated unique identifier
+- **Item Name**: Name of the item with issues
+- **Issue Description**: Detailed problem description
+- **Priority**: Low, Medium, High
+- **Status**: Open, In Progress, Resolved, Closed
+- **Reporter Name**: Who reported the issue
+- **Assigned To**: Who's responsible for fixing it
+- **Reported Date**: Automatically timestamp
+- **Resolution Date**: Auto-filled when resolved
+- **Notes**: Additional information
 
-## Setup Instructions
-1. Create a new Google Sheet to store the stock data.
-2. Open the Google Apps Script editor and create a new project.
-3. Copy the contents of `stockApp.gs` into the script editor.
-4. Deploy the script as a web app and note the script URL.
-5. Create an `index.html` file and copy the frontend code into it.
-6. Open the `index.html` file in a web browser to access the web app.
+### 3. Dashboard Features
+- View all issues in a sortable table
+- Quick status updates via dropdown
+- Delete issues with confirmation
+- Refresh button to reload data
+- Color-coded priority and status indicators
 
-## Usage
-- Select an item from the dropdown menu.
-- Enter the quantity in the input field.
-- Submit the form to send the data to the Google Sheet.
-- The current date and time will be automatically added to the entry.
+## Files Included
 
-## Contributing
-Feel free to fork the repository and submit pull requests for any improvements or bug fixes.
+1. **Code.gs** - Main Google Apps Script backend code
+2. **Index.html** - Web interface with forms and dashboard
+3. **Styles.html** - CSS styling for professional appearance
+4. **DEPLOYMENT_INSTRUCTIONS.md** - Step-by-step setup guide
+5. **README.md** - This file
+
+## Quick Start
+
+1. **Follow the deployment instructions** in `DEPLOYMENT_INSTRUCTIONS.md`
+2. **Create your Google Sheet** and get the spreadsheet ID
+3. **Set up Google Apps Script** with the provided code files
+4. **Deploy as web app** and get your unique URL
+5. **Start tracking issues!**
+
+## Usage Examples
+
+### Adding an Issue
+1. Open the web app
+2. Fill in the "Add Issue" form:
+   - Item Name: "Laptop #123"
+   - Description: "Screen flickering intermittently"
+   - Priority: "High"
+   - Reporter: "John Doe"
+   - Assigned To: "IT Support"
+3. Click "Submit Issue"
+4. Issue is immediately saved to Google Sheets
+
+### Managing Issues
+1. Click the "Dashboard" tab
+2. Click "Refresh" to load all issues
+3. Use the dropdown to change status
+4. Click "Delete" to remove completed issues
+5. View full descriptions by hovering over truncated text
+
+## Benefits
+
+- **No Installation**: Runs in any web browser
+- **Free to Use**: Uses free Google services
+- **Team Collaboration**: Multiple people can submit and track issues
+- **Data Backup**: Google Sheets automatically saves and backs up data
+- **Export Options**: Export data from Google Sheets to Excel, CSV, etc.
+- **Customizable**: Easy to modify fields and styling
+- **Secure**: Uses Google's authentication and security
+
+## Who Can Use This
+
+- **Small Businesses**: Track equipment, inventory, or service issues
+- **IT Departments**: Log and manage technical problems
+- **Facilities Management**: Report and track building/maintenance issues
+- **Project Teams**: Track project-related problems and blockers
+- **Schools**: Report and manage classroom or equipment issues
+- **Anyone**: Who needs a simple, effective issue tracking system
+
+## Support
+
+If you encounter any issues during setup:
+
+1. Check the troubleshooting section in `DEPLOYMENT_INSTRUCTIONS.md`
+2. Verify all files are properly copied and saved
+3. Ensure the spreadsheet ID is correctly updated
+4. Make sure all permissions are properly authorized
+
+## Next Steps
+
+After deployment, you can:
+- Customize the fields to match your needs
+- Add more status options or priority levels
+- Modify the styling and colors
+- Add email notifications (advanced)
+- Create reports and charts in Google Sheets
+- Set up automatic backups
+
+Enjoy your new issue tracking system!
