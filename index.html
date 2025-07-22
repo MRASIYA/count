@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 30px;
+        background-color: #f0f0f0;
+      }
+      h2, h3 {
+        color: #333;
+      }
+      label, input, select, button {
+        margin-top: 10px;
+        font-size: 16px;
+        display: block;
+      }
+      input, select {
+        width: 300px;
+        padding: 8px;
+      }
+      button {
+        padding: 10px 20px;
+        background: #4285f4;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 15px;
+      }
+      button:hover {
+        background: #3367d6;
+      }
+      #response {
+        margin-top: 15px;
+        font-weight: bold;
+        color: green;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+        background: white;
+      }
+      th, td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Material Issue Form</h2>
+
+    <label for="material">Material Name:</label>
+    <select id="material"></select>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" min="1" placeholder="Enter quantity" />
+
+    <button id="submitBtn" onclick="submitData()">Submit</button>
+
+    <div id="response"></div>
+
+    <h3>Issued Items</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Material</th>
+          <th>Quantity</th>
+          <th>Date & Time</th>
+        </tr>
+      </thead>
+      <tbody id="issuedTable"></tbody>
+    </table>
+
+    <script>
+      // Use your deployed Apps Script web app URL here
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz7sXy6A8vS8fMoMJnf2-01bSFfxsB-M6e_faVA68qCv9bkg_cN5uuJt-VfJ2KhwGbH/exec";
+
+      function loadMaterials() {
+        fetch(SCRIPT_URL + "?action=getMaterialList")
+          .then(res => res.json())
+          .then(materials => {
+            const select = document.getElementById("material");
+            select.innerHTML = materials.map(mat =>
+              `<option value="${mat}">${mat}</option>`
+            ).join('');
+          });
+      }
+
+      function submitData() {
+        const material = document.getElementById("material").value;
+        const quantity = document.getElementById("quantity").value;
+        const btn = document.getElementById("submitBtn");
+
+        if (!material || !quantity) {
+          alert("Please enter both material and quantity.");
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "Submitting...";
+
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `action=submitIssue&material=${encodeURIComponent(material)}&quantity=${encodeURIComponent(quantity)}`
+        })
+          .then(res => res.json())
+          .then(response => {
+            btn.disabled = false;
+            btn.innerText = "Submit";
+            if (response.error) {
+              document.getElementById("response").innerText = response.error;
+            } else {
+              document.getElementById("response").innerText =
+                `✅ ${response.material} updated. Total: ${response.quantity}`;
+              document.getElementById("quantity").value = '';
+              loadIssuedData(); // live update
+            }
+          })
+          .catch(() => {
+            btn.disabled = false;
+            btn.innerText = "Submit";
+            document.getElementById("response").innerText = "Network error.";
+          });
+      }
+
+      function loadIssuedData() {
+        fetch(SCRIPT_URL + "?action=getIssuedData")
+          .then(res => res.json())
+          .then(data => {
+            const table = document.getElementById("issuedTable");
+            table.innerHTML = data.map(row =>
+              `<tr>
+                <td>${row.material}</td>
+                <td>${row.quantity}</td>
+                <td>${row.date}</td>
+              </tr>`
+            ).join('');
+          });
+      }
+
+      window.onload = function() {
+        loadMaterials();
+        loadIssuedData();
+      }
+    </script>
+  </body>
+</html>
